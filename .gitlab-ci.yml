@@ -1,0 +1,36 @@
+image: alpine
+stages:
+  - deploy-www
+  - deploy-container
+
+variables:
+  DEPLOY_PATH: /var/docker/trulyrichgroup-com
+  WWW_PATH: /var/www/trulyrichgroup-com
+
+before_script:
+  - echo "ENV=production" >> .env
+  - echo "VAR_ROOT=/var" >> .env
+  - echo "COMPOSE_PROJECT_NAME=trulyrichgroup-com" >> .env
+
+deploy:www:
+  stage: deploy-www
+  # variables:
+  #   CI_DEBUG_TRACE: "true"
+  tags:
+    - sfo2
+  script:
+    - rm -rf "$WWW_PATH"
+    - cp -R src/ "$WWW_PATH"
+
+deploy:container:
+  stage: deploy-container
+  # variables:
+  #   CI_DEBUG_TRACE: "true"
+  tags:
+    - sfo2
+  script:
+    - rm -rf "$DEPLOY_PATH"
+    - cp -R "$CI_PROJECT_DIR" "$DEPLOY_PATH"
+    - cd "$DEPLOY_PATH"
+    - docker-compose up -d
+    - rm -rf .git*
