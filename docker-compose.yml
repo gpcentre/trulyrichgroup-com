@@ -11,7 +11,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro 
       - "$VAR_ROOT/www/trulyrichgroup-com:/var/www/html"
   php-fpm:
-    image: wordpress/php7.1-fpm-alpine 
+    image: wordpress:php7.1-fpm-alpine 
     environment:
       WORDPRESS_DB_PASSWORD: password
       WORDPRESS_DB_HOST: mariadb
