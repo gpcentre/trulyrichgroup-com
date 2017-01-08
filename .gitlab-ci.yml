@@ -4,8 +4,6 @@ stages:
   - deploy
 
 before_script:
-  - echo "ENV=production" >> .env
-  - echo "COMPOSE_PROJECT_NAME=trulyrichgroup-com" >> .env
   - docker-compose down --remove-orphans
 
 build:
@@ -16,8 +14,8 @@ build:
 
 deploy:
   stage: deploy
-  variables:
-   CI_DEBUG_TRACE: "true"
+  # variables:
+  #  CI_DEBUG_TRACE: "true"
   environment:
     name: production
     url: http://docker.trulyrichgroup.com/
