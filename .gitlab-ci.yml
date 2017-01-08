@@ -6,10 +6,10 @@ stages:
 before_script:
   - echo "WWW_ROOT=/var/www/trulyrichgroup-com" >> .env
   - echo "COMPOSE_PROJECT_NAME=trulyrichgroup" >> .env
-  - docker-compose down --remove-orphans
 build:
   stage: build
   script:
+    - docker-compose down --remove-orphans
     - docker-compose build
 
 deploy:container:
@@ -22,7 +22,6 @@ deploy:container:
   tags:
     - shell
   script:
-    - docker-compose down --remove-orphans
     - docker-compose build
     - docker-compose up -d
     - rm -rf .git*
