@@ -24,7 +24,7 @@ deploy:www:
   tags:
     - shell
   script:
-    - cp -Rn src/wp-content/* /var/www/trulyrichgroup-com/wp-content
+    - cp -Ru src/wp-content/* /var/www/trulyrichgroup-com/wp-content
 
 
 deploy:container:
