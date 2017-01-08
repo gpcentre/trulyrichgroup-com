@@ -17,7 +17,7 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro 
       - ./etc/nginx/conf.d:/etc/nginx/conf.d
-      - "./src/wp-content:/var/www/wp-content"
+      - "$WWW_ROOT/wp-content:/var/www/wp-content"
 networks:
   default:
     external:

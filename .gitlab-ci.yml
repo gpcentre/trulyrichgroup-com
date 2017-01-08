@@ -1,9 +1,11 @@
 image: docker:latest
 stages:
   - build
-  - deploy
+  - deploy-www
+  - deploy-container
 
 before_script:
+  - echo "WWW_ROOT=/var/www/trulyrichgroup-com" >> .env
   - docker-compose down --remove-orphans
 
 build:
@@ -12,8 +14,21 @@ build:
     - cd src
     - docker-compose build
 
-deploy:
-  stage: deploy
+deploy:www:
+  stage: deploy-www
+  # variables:
+  #  CI_DEBUG_TRACE: "true"
+  environment:
+    name: production
+    url: http://docker.trulyrichgroup.com/
+  tags:
+    - shell
+  script:
+    - cp -Rn src/wp-content /var/www/trulyrichgroup-com/wp-content
+
+
+deploy:container:
+  stage: deploy-container
   # variables:
   #  CI_DEBUG_TRACE: "true"
   environment:
