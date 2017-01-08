@@ -1,27 +1,19 @@
 version: '2'
 services:
-  trulyrichgroup-com:
-    image: nginx:latest
-    links:
-      - php-fpm:phpfcgi
+  trg:
+    image: registry.gitlab.com/gpcentre/trulyrichgroup-com
+    ports:
+      - 80
+      - 443
+    env_file: .env
     environment:
       VIRTUAL_HOST: trulyrichgroup.com,*.trulyrichgroup.com
-    volumes:
-      - ./etc/nginx/conf.d:/etc/nginx/conf.d
-      - /var/run/docker.sock:/tmp/docker.sock:ro 
-      - "$VAR_ROOT/www/trulyrichgroup-com:/var/www/html"
-  php-fpm:
-    image: wordpress:php7.1-fpm-alpine 
-    environment:
-      WORDPRESS_DB_PASSWORD: password
-      WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_NAME: wp_trg    
     external_links:
       - mariadb-node1:mariadb
     volumes:
-      - ./etc/php-fpm/php-fpm.d/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
-      - ./etc/php-fpm/conf.d/zz-docker.ini:/usr/local/etc/php/conf.d/zz-docker.ini
-      - "$VAR_ROOT/www/trulyrichgroup-com:/var/www/html"
+      - /var/run/docker.sock:/tmp/docker.sock:ro 
+      - ./etc/nginx/conf.d:/etc/nginx/conf.d
+      - "./src/wp-content:/var/www/wp-content"
 networks:
   default:
     external:
