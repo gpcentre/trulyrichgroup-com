@@ -30,6 +30,9 @@ COPY src/wp-config.php $WP_ROOT
 RUN chown -R www-data:www-data $WP_ROOT \
    && chmod 640 $WP_ROOT/wp-config.php
 
+RUN chgrp -R www-data /var/www/wp-content && \
+    chmod -R g+s /var/www/wp-content 
+
 COPY ./etc/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./etc/php-fpm/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 COPY ./etc/php-fpm/conf.d/zz-docker.ini /usr/local/etc/php/conf.d/zz-docker.ini

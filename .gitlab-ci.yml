@@ -1,16 +1,23 @@
 image: docker:latest
 stages:
-  - deploy-container
+  - build
+  - deploy
 
 before_script:
   - echo "ENV=production" >> .env
   - echo "COMPOSE_PROJECT_NAME=trulyrichgroup-com" >> .env
+  - docker-compose down --remove-orphans
 
-deploy:container:
-  image: registry.gitlab.com/gpcentre/trulyrichgroup-com
+build:
+  stage: build
+  script:
+    - cd src
+    - docker-compose build
+
+deploy:
   stage: deploy-container
-  #variables:
-  #  CI_DEBUG_TRACE: "true"
+  variables:
+   CI_DEBUG_TRACE: "true"
   environment:
     name: production
     url: http://docker.trulyrichgroup.com/
@@ -18,5 +25,6 @@ deploy:container:
     - shell
   script:
     - docker-compose down --remove-orphans
+    - docker-compose build
     - docker-compose up -d
     - rm -rf .git*

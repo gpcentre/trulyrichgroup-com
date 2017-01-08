@@ -1,11 +1,15 @@
 version: '2'
 services:
   trg:
-    image: registry.gitlab.com/gpcentre/trulyrichgroup-com
+    build: .
+    image: gpcentre/trulyrichgroup-com:latest
+    container_name: trg
+    domainname: trulyrichgroup.com
+    hostname: trulyrichgroup
     ports:
       - 80
       - 443
-    env_file: .env
+    env_file: /etc/docker/envs/trulyrichgroup-com.env
     environment:
       VIRTUAL_HOST: trulyrichgroup.com,*.trulyrichgroup.com
     external_links:
