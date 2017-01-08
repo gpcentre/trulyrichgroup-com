@@ -29,7 +29,9 @@ RUN chown -R www-data:www-data $WP_ROOT \
    && chmod 640 $WP_ROOT/wp-config.php
 
 RUN chgrp -R www-data /var/www/wp-content \
-   && chmod -R g+ws /var/www/wp-content 
+   && chmod -R g+ws /var/www/wp-content  \
+   # This fixes an issue with php-fpm uploads unable to see nginx uploaded files
+   && chmod g+rX /var/lib/nginx/tmp
 
 COPY ./etc/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./etc/php-fpm/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
