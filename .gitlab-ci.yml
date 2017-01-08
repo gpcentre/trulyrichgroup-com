@@ -15,7 +15,7 @@ build:
     - docker-compose build
 
 deploy:
-  stage: deploy-container
+  stage: deploy
   variables:
    CI_DEBUG_TRACE: "true"
   environment:
