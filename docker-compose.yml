@@ -3,7 +3,6 @@ services:
   trg:
     build: .
     image: gpcentre/trulyrichgroup-com:latest
-    container_name: trg
     domainname: trulyrichgroup.com
     hostname: trulyrichgroup
     ports:
