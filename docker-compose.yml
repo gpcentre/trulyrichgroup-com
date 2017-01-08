@@ -1,16 +1,14 @@
 version: '2'
 services:
-  trg:
+  docker:
     build: .
     image: gpcentre/trulyrichgroup-com:latest
     domainname: trulyrichgroup.com
-    hostname: trulyrichgroup
     ports:
       - 80
       - 443
     env_file: /etc/docker/envs/trulyrichgroup-com.env
     environment:
-      COMPOSE_PROJECT_NAME: trg
       VIRTUAL_HOST: trulyrichgroup.com,*.trulyrichgroup.com
     external_links:
       - mariadb-node1:mariadb

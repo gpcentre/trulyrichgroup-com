@@ -24,7 +24,7 @@ COPY etc/supervisord.conf /etc/supervisord.conf
 COPY stop-supervisor.sh /usr/local/bin/
 
 # on wp-config to rule them all. Set values in .env file
-COPY src/wp-config.php $WP_ROOT
+COPY wp-config.php $WP_ROOT
 RUN chown -R www-data:www-data $WP_ROOT \
    && chmod 640 $WP_ROOT/wp-config.php
 
