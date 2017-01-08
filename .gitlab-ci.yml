@@ -9,9 +9,14 @@ before_script:
 deploy:container:
   image: registry.gitlab.com/gpcentre/trulyrichgroup-com
   stage: deploy-container
-  variables:
-    CI_DEBUG_TRACE: "true"
+  #variables:
+  #  CI_DEBUG_TRACE: "true"
+  environment:
+    name: production
+    url: http://docker.trulyrichgroup.com/
   tags:
     - shell
   script:
-    - docker-compose up
+    - docker-compose down --remove-orphans
+    - docker-compose up -d
+    - rm -rf .git*
