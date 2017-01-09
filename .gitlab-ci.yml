@@ -4,9 +4,6 @@ stages:
   - build
   - release
 
-before_script:
-  - docker login -u gitlab-ci -p $CI_BUILD_TOKEN $STAGING_REGISTRY
-
 cache:
   key: "$CI_BUILD_REF"
   paths:
@@ -19,12 +16,16 @@ variables:
   
 build:
   stage: build
+  variables:
+   CI_DEBUG_TRACE: "true"
   script:
     - docker build --pull -t $CONTAINER_TEST_IMAGE .
     - docker push $CONTAINER_TEST_IMAGE
 
 release:
   stage: release
+  tags:
+    - docker
   script:
     - docker pull $CONTAINER_TEST_IMAGE
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
