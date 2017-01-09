@@ -37,4 +37,5 @@ COPY ./etc/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY ./etc/php-fpm/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 COPY ./etc/php-fpm/conf.d/zz-docker.ini /usr/local/etc/php/conf.d/zz-docker.ini
 
+# Allows the ability to run / monitor two processes on startup
 CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisord.conf" ]

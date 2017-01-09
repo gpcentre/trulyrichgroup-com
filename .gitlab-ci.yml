@@ -1,27 +1,31 @@
 image: docker:latest
+
 stages:
   - build
-  - deploy-container
+  - release
 
 before_script:
-  - echo "WWW_ROOT=/var/www/trulyrichgroup-com" >> .env
-  - echo "COMPOSE_PROJECT_NAME=trulyrichgroup" >> .env
+  - docker login -u gitlab-ci -p $CI_BUILD_TOKEN $STAGING_REGISTRY
+
+cache:
+  key: "$CI_BUILD_REF"
+  paths:
+    - src/static/dist
+
+variables:
+  STAGING_REGISTRY: "registry.gitlab.com"
+  CONTAINER_TEST_IMAGE: ${STAGING_REGISTRY}/${CI_PROJECT_NAME}:${CI_BUILD_REF_NAME}_${CI_BUILD_REF}_test
+  CONTAINER_RELEASE_IMAGE: ${STAGING_REGISTRY}/${CI_PROJECT_NAME}:${CI_BUILD_REF_NAME}_${CI_BUILD_REF}
+  
 build:
   stage: build
   script:
-    - docker-compose down --remove-orphans
-    - docker-compose build
+    - docker build --pull -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
 
-deploy:container:
-  stage: deploy-container
-  # variables:
-  #  CI_DEBUG_TRACE: "true"
-  environment:
-    name: production
-    url: http://docker.trulyrichgroup.com/
-  tags:
-    - shell
+release:
+  stage: release
   script:
-    - docker-compose build
-    - docker-compose up -d
-    - rm -rf .git*
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+    - docker push $CONTAINER_RELEASE_IMAGE
