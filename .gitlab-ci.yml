@@ -8,7 +8,7 @@ stages:
   - release
 
 before_script:
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $STAGING_REGISTRY
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
 
 variables:
   DOCKER_DRIVER: overlay
