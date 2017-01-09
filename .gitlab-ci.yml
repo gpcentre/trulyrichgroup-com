@@ -8,7 +8,7 @@ stages:
   - release
 
 before_script:
-  - docker login -u gitlab-ci -p $CI_BUILD_TOKEN $STAGING_REGISTRY
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $STAGING_REGISTRY
 
 variables:
   DOCKER_DRIVER: overlay
@@ -19,9 +19,8 @@ cache:
     - src/static/dist
 
 variables:
-  STAGING_REGISTRY: "registry.gitlab.com"
-  CONTAINER_TEST_IMAGE: ${STAGING_REGISTRY}/gpcentre/${CI_PROJECT_NAME}:${CI_BUILD_REF_NAME}_${CI_BUILD_REF}_test
-  CONTAINER_RELEASE_IMAGE: ${STAGING_REGISTRY}/gpcentre/${CI_PROJECT_NAME}:${CI_BUILD_REF_NAME}_${CI_BUILD_REF}
+  CONTAINER_TEST_IMAGE: ${CI_REGISTRY_IMAGE}:${CI_BUILD_REF_NAME}_${CI_BUILD_REF}_test
+  CONTAINER_RELEASE_IMAGE: ${CI_REGISTRY_IMAGE}:latest
   
 build:
   stage: build
